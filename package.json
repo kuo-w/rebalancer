@@ -1,0 +1,28 @@
+{
+  "name": "rebalancer",
+  "version": "1.0.0",
+  "author": "William Kuo <william.k.kuo@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "dev": "parcel index.html"
+  },
+  "dependencies": {
+    "bootstrap": "^4.2.1",
+    "bootstrap-vue": "^2.0.0-rc.11",
+    "jquery": "^3.3.1",
+    "popper.js": "^1.14.7",
+    "vue": "^2.5.22",
+    "vue-hot-reload-api": "^2.3.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.2.2",
+    "@vue/component-compiler-utils": "^2.5.2",
+    "babel-preset-env": "^1.7.0",
+    "eslint": "^5.13.0",
+    "eslint-plugin-vue": "^5.1.0",
+    "parcel-bundler": "^1.11.0",
+    "parcel-plugin-eslint": "^1.0.6",
+    "sass": "^1.17.0",
+    "vue-template-compiler": "^2.5.22"
+  }
+}
