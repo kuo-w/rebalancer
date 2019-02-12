@@ -1,1 +1,6 @@
-@import "bootstrap/dist/css/bootstrap.css";
+@import "milligram/dist/milligram.min.css";
+
+input:disabled {
+  background: #eee;
+  border: #eee;
+}

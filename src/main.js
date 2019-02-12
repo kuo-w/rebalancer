@@ -1,6 +1,10 @@
 import Vue from "vue";
 import App from "./App.vue";
-import "bootstrap";
+import Vuelidate from "vuelidate";
+
+Vue.use(Vuelidate);
+
+Vue.prototype.$eventHub = new Vue(); // Global event bus
 
 new Vue({
   el: "#app",

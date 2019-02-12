@@ -1,50 +1,44 @@
 <template>
-  <div class="container-fluid">
-    <h1>Current Allocation</h1>
-    <div class="d-inline-flex w-100">
-      <h4>Investible</h4>
-      <v-input class="ml-3" pre="$" aria-label="Investable $ Amount"/>
+  <div class="container">
+    <h1>Re:balancer</h1>
+    <div>
+      <h4>Investable</h4>
+      <v-input
+        class="ml-3 investable"
+        pre="$"
+        v-model="investable"
+        aria-label="Investable $ Amount"
+      ></v-input>
+      <asset-row></asset-row>
     </div>
-    <button class="btn btn-primary" @click="addItem">Add+</button>
-    <table class="table">
-      <thead>
-        <tr>
-          <th scope="col">%Allocation</th>
-          <th scope="col">$Share</th>
-          <th scope="col">$Invested</th>
-          <th scope="col">#Shares</th>
-        </tr>
-      </thead>
-      <tbody>
-        <item v-for="i in items" :key="i.id" :investable="investable" class="column"/>
-      </tbody>
-    </table>
+    <calc-table :investable="investable"/>
   </div>
 </template>
 
 <script>
-import Item from "./item.vue";
-import vInput from "./input.vue";
+import VInput from "./VInput.vue";
+import AssetRow from "./AssetRow.vue";
+import CalcTable from "./CalcTable.vue";
 
 export default {
-  name: "app",
+  components: {
+    VInput,
+    CalcTable,
+    AssetRow
+  },
   data() {
     return {
-      investable: "",
-      items: []
+      investable: ""
     };
-  },
-  components: {
-    Item,
-    vInput
-  },
-  methods: {
-    addItem() {
-      this.items.push({ id: Date.now().toString() });
-    }
-  },
-  created() {
-    this.addItem();
   }
 };
 </script>
+
+<style lang="scss" scoped>
+.container {
+  margin-top: 10em;
+}
+.investable {
+  width: 300px;
+}
+</style>
