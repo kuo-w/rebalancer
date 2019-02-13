@@ -9,9 +9,13 @@
         v-model="investable"
         aria-label="Investable $ Amount"
       ></v-input>
-      <asset-row></asset-row>
+      <transition name="slide-fade">
+        <asset-row v-if="investable"></asset-row>
+      </transition>
     </div>
-    <calc-table :investable="investable"/>
+    <transition name="slide-fade">
+      <calc-table v-if="investable" :investable="investable"/>
+    </transition>
   </div>
 </template>
 

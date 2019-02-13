@@ -1,26 +1,29 @@
 <template>
   <div>
     <div v-if="items.length === 0">Calculated assets will show here.</div>
-    <table v-else class="u-full-width">
-      <thead>
-        <tr>
-          <th></th>
-          <th>%Allocation</th>
-          <th>$Share</th>
-          <th>$Invested</th>
-          <th>#Shares</th>
-        </tr>
-      </thead>
-      <tbody>
-        <calc-row
-          v-for="item in items"
-          :key="item.id"
-          :id="item.id"
-          :asset="item.asset"
-          :investable="investable"
-        />
-      </tbody>
-    </table>
+    <transition name="slide-fade">
+      <table style="max-width:900px;" v-if="items.length > 0" class="u-full-width">
+        <caption style="text-align:start;">Summary</caption>
+        <thead>
+          <tr>
+            <th style="width:15%"></th>
+            <th style="width:15%">%Allocation</th>
+            <th style="width:20%">$Share</th>
+            <th style="width:30%">$Invested</th>
+            <th style="width:20%">#Shares</th>
+          </tr>
+        </thead>
+        <tbody>
+          <calc-row
+            v-for="item in items"
+            :key="item.id"
+            :id="item.id"
+            :asset="item.asset"
+            :investable="investable"
+          />
+        </tbody>
+      </table>
+    </transition>
   </div>
 </template>
 <script>

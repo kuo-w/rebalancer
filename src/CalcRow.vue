@@ -1,7 +1,9 @@
 <template>
   <tr>
     <td>
-      <div>{{asset.symbol}}</div>
+      <div>
+        <b>{{asset.symbol}}</b>
+      </div>
     </td>
     <td>
       <div>{{asset.allocation}}</div>
@@ -39,7 +41,7 @@ export default {
         (this.slice - parseFloat(this.asset.invested)) /
         parseFloat(this.asset.sharePrice);
       if (Number.isNaN(numShareBuy)) return "";
-      return numShareBuy;
+      return Math.floor(numShareBuy);
     }
   }
 };
