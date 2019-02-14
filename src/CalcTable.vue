@@ -1,16 +1,29 @@
 <template>
-  <div>
-    <div v-if="items.length === 0">Calculated assets will show here.</div>
+  <div :class="{'overflow':overflow}">
     <transition name="slide-fade">
+      <div
+        v-show="items.length === 0 && help"
+        class="help"
+        :class="{'helpVisiblityNone': (items.length > 0 && !help)}"
+      >Calculated assets will show here.</div>
+    </transition>
+    <transition
+      name="slide-fade"
+      @before-enter="toggleHelp"
+      @after-enter="toggleOverflow"
+      @before-leave="toggleOverflow"
+      @after-leave="toggleHelp"
+    >
       <table style="max-width:900px;" v-if="items.length > 0" class="u-full-width">
         <caption style="text-align:start;">Summary</caption>
         <thead>
           <tr>
-            <th style="width:15%"></th>
-            <th style="width:15%">%Allocation</th>
-            <th style="width:20%">$Share</th>
-            <th style="width:30%">$Invested</th>
-            <th style="width:20%">#Shares</th>
+            <th></th>
+            <th></th>
+            <th>%Allocation</th>
+            <th>$Share</th>
+            <th>$Invested</th>
+            <th>#Shares</th>
           </tr>
         </thead>
         <tbody>
@@ -20,6 +33,7 @@
             :id="item.id"
             :asset="item.asset"
             :investable="investable"
+            @remove-asset="removeAsset"
           />
         </tbody>
       </table>
@@ -32,7 +46,9 @@ import CalcRow from "./CalcRow.vue";
 export default {
   data() {
     return {
-      items: []
+      items: [],
+      overflow: false,
+      help: true
     };
   },
   props: {
@@ -42,6 +58,18 @@ export default {
     CalcRow
   },
   methods: {
+    toggleOverflow() {
+      this.overflow = !this.overflow;
+    },
+    toggleHelp() {
+      this.help = !this.help;
+    },
+    removeAsset(id) {
+      const index = this.items.findIndex(e => {
+        return e.id == id;
+      });
+      this.$delete(this.items, index);
+    },
     addItem(asset) {
       this.items.push({
         id: (
@@ -59,4 +87,18 @@ export default {
   }
 };
 </script>
+<style>
+.overflow {
+  overflow-x: auto;
+}
+
+.help {
+  display: block !important;
+}
+
+.helpVisiblityNone {
+  visibility: hidden;
+}
+</style>
+
 
