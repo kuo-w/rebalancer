@@ -1,18 +1,23 @@
 <template>
   <tr>
     <td>
-      <div>
-        <b>{{asset.symbol}}</b>
+      <div style="width:30px;display:flex;justify-content:center;align-items:center;">
+        <img @click="deleteRow" src="/assets/remove.svg" alt="Remove">
       </div>
     </td>
     <td>
-      <div>{{asset.allocation}}</div>
+      <div>
+        <b>{{asset.symbol.toUpperCase()}}</b>
+      </div>
     </td>
     <td>
-      <div>{{asset.sharePrice}}</div>
+      <div>{{parseFloat(asset.allocation).toFixed(2)}}</div>
     </td>
     <td>
-      <div>{{asset.invested}}</div>
+      <div>{{parseFloat(asset.sharePrice).toFixed(2)}}</div>
+    </td>
+    <td>
+      <div>{{parseFloat(asset.invested).toFixed(2)}}</div>
     </td>
     <td>
       <div>{{numShareBuy}}</div>
@@ -29,6 +34,11 @@ export default {
     investable: String,
     id: String,
     asset: Object
+  },
+  methods: {
+    deleteRow() {
+      this.$emit("remove-asset", this.id);
+    }
   },
   computed: {
     slice() {

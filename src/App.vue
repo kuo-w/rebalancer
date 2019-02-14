@@ -3,12 +3,11 @@
     <h1>Re:balancer</h1>
     <div>
       <h4>Investable</h4>
-      <v-input
-        class="ml-3 investable"
-        pre="$"
-        v-model="investable"
-        aria-label="Investable $ Amount"
-      ></v-input>
+      <div class="row">
+        <div class="column column-40">
+          <v-input pre="$" v-model="investable" aria-label="Investable $ Amount"></v-input>
+        </div>
+      </div>
       <transition name="slide-fade">
         <asset-row v-if="investable"></asset-row>
       </transition>
@@ -41,8 +40,5 @@ export default {
 <style lang="scss" scoped>
 .container {
   margin-top: 10em;
-}
-.investable {
-  width: 300px;
 }
 </style>

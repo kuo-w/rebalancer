@@ -1,16 +1,17 @@
 <template>
-  <div>
+  <div style="overflow-x:auto;">
     <div v-if="items.length === 0">Calculated assets will show here.</div>
     <transition name="slide-fade">
       <table style="max-width:900px;" v-if="items.length > 0" class="u-full-width">
         <caption style="text-align:start;">Summary</caption>
         <thead>
           <tr>
-            <th style="width:15%"></th>
-            <th style="width:15%">%Allocation</th>
-            <th style="width:20%">$Share</th>
-            <th style="width:30%">$Invested</th>
-            <th style="width:20%">#Shares</th>
+            <th></th>
+            <th></th>
+            <th>%Allocation</th>
+            <th>$Share</th>
+            <th>$Invested</th>
+            <th>#Shares</th>
           </tr>
         </thead>
         <tbody>
@@ -20,6 +21,7 @@
             :id="item.id"
             :asset="item.asset"
             :investable="investable"
+            @remove-asset="removeAsset"
           />
         </tbody>
       </table>
@@ -42,6 +44,12 @@ export default {
     CalcRow
   },
   methods: {
+    removeAsset(id) {
+      const index = this.items.findIndex(e => {
+        return e.id == id;
+      });
+      this.$delete(this.items, index);
+    },
     addItem(asset) {
       this.items.push({
         id: (
