@@ -5,4 +5,7 @@ module.exports = {
   env: {
     amd: true
   }
+  // rules: {
+  //   "no-console": "off"
+  // }
 };

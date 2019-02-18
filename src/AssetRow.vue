@@ -5,6 +5,7 @@
         <label for="symbol">Symbol</label>
         <input
           :class="{'field--error': $v.asset.symbol.$error}"
+          @blur="blurSymbol"
           name="symbol"
           v-model.trim="$v.asset.symbol.$model"
           type="text"
@@ -19,15 +20,6 @@
           type="text"
         >
       </div>
-      <div class="column column-20">
-        <label for="sharePrice">$Share</label>
-        <input
-          :class="{'field--error': $v.asset.sharePrice.$error}"
-          name="sharePrice"
-          v-model="$v.asset.sharePrice.$model"
-          type="text"
-        >
-      </div>
       <div class="column column-25">
         <label for="invested">$Invested</label>
         <input
@@ -37,12 +29,21 @@
           type="text"
         >
       </div>
+      <div class="column column-20">
+        <label for="sharePrice">$Share</label>
+        <input
+          :class="{'field--error': $v.asset.sharePrice.$error}"
+          name="sharePrice"
+          v-model="$v.asset.sharePrice.$model"
+          type="text"
+        >
+      </div>
       <div class="column column-20 column--submit">
         <input type="submit" value="Ok">
       </div>
     </fieldset>
     <ul>
-      <li class="error" v-if="!$v.asset.symbol.alpha">Symbol should be letters only.</li>
+      <li class="error" v-if="$v.asset.symbol.$error">Symbol should be letters only.</li>
       <li class="error" v-if="valueErrors">Values greater than 0 only.</li>
       <li class="error" v-if="submitStatus == 'ERROR'">There are errors.</li>
     </ul>
@@ -51,6 +52,9 @@
 
 <script>
 import { required, alpha, decimal, minValue } from "vuelidate/lib/validators";
+import { AlphaVantageApi } from "./AlphaVantageApi.js";
+
+const symbol = symbol => /^[a-zA-Z.]+$/.test(symbol);
 
 function initialAssetData() {
   return {
@@ -72,7 +76,7 @@ export default {
     asset: {
       symbol: {
         required,
-        alpha
+        symbol
       },
       allocation: {
         required,
@@ -101,6 +105,14 @@ export default {
     }
   },
   methods: {
+    async blurSymbol() {
+      const { symbol, price } = await new AlphaVantageApi(
+        this.asset.symbol
+      ).getSymbolPrice();
+      if (this.asset.symbol == symbol) {
+        this.asset.sharePrice = price;
+      }
+    },
     handleSubmit() {
       if (this.$v.$invalid) {
         this.submitStatus = "ERROR";

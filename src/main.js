@@ -1,6 +1,7 @@
 import Vue from "vue";
 import App from "./App.vue";
 import Vuelidate from "vuelidate";
+import "@babel/polyfill";
 
 Vue.use(Vuelidate);
 
