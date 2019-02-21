@@ -3,12 +3,19 @@ export class AlphaVantageApi {
     this.symbol = symbol;
   }
 
+  // async getSymbolPrice() {
+  //   const response = await fetch(this._quoteUrl(this.symbol));
+  //   const data = await response.json();
+  //   return {
+  //     symbol: this.symbol,
+  //     price: data["Global Quote"]["05. price"]
+  //   };
+  // }
+
   async getSymbolPrice() {
-    const response = await fetch(this._quoteUrl(this.symbol));
-    const data = await response.json();
     return {
       symbol: this.symbol,
-      price: data["Global Quote"]["05. price"]
+      price: 1
     };
   }
 
