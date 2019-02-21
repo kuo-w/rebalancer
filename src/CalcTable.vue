@@ -60,6 +60,7 @@ export default {
   },
   methods: {
     toggleOverflow() {
+      console.log('toggle')
       if (window.innerWidth <= this.overflowBreakpoint) this.overflow = true;
       else this.overflow = false;
     },

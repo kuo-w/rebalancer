@@ -51,7 +51,7 @@
 </template>
 
 <script>
-import { required, alpha, decimal, minValue } from "vuelidate/lib/validators";
+import { required, decimal, minValue } from "vuelidate/lib/validators";
 import { AlphaVantageApi } from "./AlphaVantageApi.js";
 
 const symbol = symbol => /^[a-zA-Z.]+$/.test(symbol);
