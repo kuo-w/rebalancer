@@ -10,3 +10,29 @@ describe("Component", () => {
     expect(wrapper.isVueInstance()).toBeTruthy();
   });
 });
+
+describe("Symbol Input", () => {
+  test("has error on invalid input", () => {
+    const wrapper = mount(AssetRow);
+    const symbol = wrapper.find('input[name="symbol"]');
+    expect(symbol.exists()).toBe(true);
+    symbol.setValue("1");
+    expect(wrapper.vm.$v.asset.symbol.$error).toBe(true);
+    symbol.setValue("@");
+    expect(wrapper.vm.$v.asset.symbol.$error).toBe(true);
+  });
+
+  test("has no error on valid input", () => {
+    const wrapper = mount(AssetRow);
+    const symbol = wrapper.find('input[name="symbol"]');
+    expect(symbol.exists()).toBe(true);
+    symbol.setValue("cdn");
+    expect(wrapper.vm.$v.asset.symbol.$error).toBe(false);
+    symbol.setValue("cdn.");
+    expect(wrapper.vm.$v.asset.symbol.$error).toBe(false);
+    symbol.setValue("cdn.cdn");
+    expect(wrapper.vm.$v.asset.symbol.$error).toBe(false);
+    symbol.setValue(".cdn");
+    expect(wrapper.vm.$v.asset.symbol.$error).toBe(false);
+  });
+});

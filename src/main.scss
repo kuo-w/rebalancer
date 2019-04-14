@@ -19,6 +19,10 @@ input:disabled {
   opacity: 0;
 }
 
+.field--error {
+  border: 1px #ff0033 solid !important;
+}
+
 @media screen and (max-width: 650px) {
   .row .column[class*=" column-"] {
     max-width: 100%;

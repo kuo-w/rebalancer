@@ -1,26 +1,15 @@
-export class AlphaVantageApi {
-  constructor(symbol) {
-    this.symbol = symbol;
-  }
+export default class AlphaAdvantageApi {
+  static async getSymbolPrice(symbol) {
+    if (symbol == "") return;
+    const response = await fetch(_quoteUrl(symbol));
+    const data = await response.json();
+    if (data["Global Quote"]["05. price"] == null) return -1;
 
-  // async getSymbolPrice() {
-  //   const response = await fetch(this._quoteUrl(this.symbol));
-  //   const data = await response.json();
-  //   return {
-  //     symbol: this.symbol,
-  //     price: data["Global Quote"]["05. price"]
-  //   };
-  // }
-
-  async getSymbolPrice() {
-    return {
-      symbol: this.symbol,
-      price: 1
-    };
+    return data["Global Quote"]["05. price"].toString();
   }
+}
 
-  _quoteUrl(symbol) {
-    const ALPHAVANTAGE_API_KEY = "S0LN28NKL6IRPSB7";
-    return `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${symbol}&apikey=${ALPHAVANTAGE_API_KEY}`;
-  }
+function _quoteUrl(symbol) {
+  const ALPHAVANTAGE_API_KEY = "S0LN28NKL6IRPSB7";
+  return `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${symbol}&apikey=${ALPHAVANTAGE_API_KEY}`;
 }

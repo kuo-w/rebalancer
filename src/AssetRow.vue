@@ -52,9 +52,9 @@
 
 <script>
 import { required, decimal, minValue } from "vuelidate/lib/validators";
-import { AlphaVantageApi } from "./AlphaVantageApi.js";
+import alphaVantageApi from "./AlphaVantageApi.js";
 
-const symbol = symbol => /^[a-zA-Z.]+$/.test(symbol);
+const symbol = symbol => /^[a-zA-Z]+(.[a-zA-Z]+)?$/.test(symbol);
 
 function initialAssetData() {
   return {
@@ -106,12 +106,12 @@ export default {
   },
   methods: {
     async blurSymbol() {
-      const { symbol, price } = await new AlphaVantageApi(
-        this.asset.symbol
-      ).getSymbolPrice();
-      if (this.asset.symbol == symbol) {
-        this.asset.sharePrice = price;
-      }
+      if (this.$v.asset.symbol.$error) return;
+
+      const price = await alphaVantageApi.getSymbolPrice(this.asset.symbol);
+
+      if (price < 0) return;
+      this.asset.sharePrice = price;
     },
     handleSubmit() {
       if (this.$v.$invalid) {
@@ -128,10 +128,6 @@ export default {
 
 
 <style lang="scss" scoped>
-.field--error {
-  border: 1px #f79483 solid !important;
-}
-
 .column--submit {
   margin-top: auto;
 }

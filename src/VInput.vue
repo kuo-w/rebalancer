@@ -1,12 +1,13 @@
 <template>
-    <input
-      class="form-control"
-      :aria-label="ariaLabel"
-      type="text"
-      :value="value"
-      @input="$emit('input', $event.target.value)"
-      :placeholder="placeholder"
-    >
+  <input
+    @input="$emit('input', $event.target.value)"
+    :value="value"
+    :aria-label="ariaLabel"
+    :placeholder="placeholder"
+    :class="{'field--error': error}"
+    class="form-control"
+    type="text"
+  >
 </template>
 
 <script>
@@ -16,7 +17,8 @@ export default {
     post: String,
     value: String,
     placeholder: String,
-    ariaLabel: String
+    ariaLabel: String,
+    error: Boolean
   }
 };
 </script>

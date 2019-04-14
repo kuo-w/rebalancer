@@ -17,10 +17,16 @@
       <div>{{parseFloat(asset.sharePrice).toFixed(2)}}</div>
     </td>
     <td>
+      <div>{{parseFloat(slice)}}</div>
+    </td>
+    <td>
       <div>{{parseFloat(asset.invested).toFixed(2)}}</div>
     </td>
     <td>
       <div>{{numShareBuy}}</div>
+    </td>
+    <td>
+      <div>{{parseFloat(sharesCost)}}</div>
     </td>
   </tr>
 </template>
@@ -51,7 +57,11 @@ export default {
         (this.slice - parseFloat(this.asset.invested)) /
         parseFloat(this.asset.sharePrice);
       if (Number.isNaN(numShareBuy)) return "";
+
       return Math.floor(numShareBuy);
+    },
+    sharesCost() {
+      return this.numShareBuy * this.asset.sharePrice;
     }
   }
 };

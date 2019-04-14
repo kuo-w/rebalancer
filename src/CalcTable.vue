@@ -22,8 +22,10 @@
             <th></th>
             <th>%Allocation</th>
             <th>$Share</th>
+            <th>$Target</th>
             <th>$Invested</th>
             <th>#Shares</th>
+            <th>$Necessary</th>
           </tr>
         </thead>
         <tbody>
@@ -60,7 +62,6 @@ export default {
   },
   methods: {
     toggleOverflow() {
-      console.log('toggle')
       if (window.innerWidth <= this.overflowBreakpoint) this.overflow = true;
       else this.overflow = false;
     },
