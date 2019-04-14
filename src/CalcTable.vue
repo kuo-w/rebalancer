@@ -9,9 +9,9 @@
     </transition>
     <transition
       name="slide-fade"
-      @before-enter="toggleHelp"
       @after-enter="toggleOverflow"
       @before-leave="toggleOverflow"
+      @before-enter="toggleHelp"
       @after-leave="toggleHelp"
     >
       <table style="max-width:900px;" v-if="items.length > 0" class="u-full-width">
@@ -22,8 +22,10 @@
             <th></th>
             <th>%Allocation</th>
             <th>$Share</th>
+            <th>$Target</th>
             <th>$Invested</th>
             <th>#Shares</th>
+            <th>$Necessary</th>
           </tr>
         </thead>
         <tbody>
@@ -48,7 +50,8 @@ export default {
     return {
       items: [],
       overflow: false,
-      help: true
+      help: true,
+      overflowBreakpoint: 550
     };
   },
   props: {
@@ -59,7 +62,8 @@ export default {
   },
   methods: {
     toggleOverflow() {
-      this.overflow = !this.overflow;
+      if (window.innerWidth <= this.overflowBreakpoint) this.overflow = true;
+      else this.overflow = false;
     },
     toggleHelp() {
       this.help = !this.help;
@@ -84,6 +88,11 @@ export default {
   },
   created() {
     this.$eventHub.$on("valid-asset-submit", this.addItem);
+  },
+  mounted() {
+    window.onresize = () => {
+      this.toggleOverflow();
+    };
   }
 };
 </script>

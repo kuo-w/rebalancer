@@ -5,6 +5,7 @@
         <label for="symbol">Symbol</label>
         <input
           :class="{'field--error': $v.asset.symbol.$error}"
+          @blur="blurSymbol"
           name="symbol"
           v-model.trim="$v.asset.symbol.$model"
           type="text"
@@ -19,15 +20,6 @@
           type="text"
         >
       </div>
-      <div class="column column-20">
-        <label for="sharePrice">$Share</label>
-        <input
-          :class="{'field--error': $v.asset.sharePrice.$error}"
-          name="sharePrice"
-          v-model="$v.asset.sharePrice.$model"
-          type="text"
-        >
-      </div>
       <div class="column column-25">
         <label for="invested">$Invested</label>
         <input
@@ -37,12 +29,21 @@
           type="text"
         >
       </div>
+      <div class="column column-20">
+        <label for="sharePrice">$Share</label>
+        <input
+          :class="{'field--error': $v.asset.sharePrice.$error}"
+          name="sharePrice"
+          v-model="$v.asset.sharePrice.$model"
+          type="text"
+        >
+      </div>
       <div class="column column-20 column--submit">
         <input type="submit" value="Ok">
       </div>
     </fieldset>
     <ul>
-      <li class="error" v-if="!$v.asset.symbol.alpha">Symbol should be letters only.</li>
+      <li class="error" v-if="$v.asset.symbol.$error">Symbol should be letters only.</li>
       <li class="error" v-if="valueErrors">Values greater than 0 only.</li>
       <li class="error" v-if="submitStatus == 'ERROR'">There are errors.</li>
     </ul>
@@ -50,7 +51,10 @@
 </template>
 
 <script>
-import { required, alpha, decimal, minValue } from "vuelidate/lib/validators";
+import { required, decimal, minValue } from "vuelidate/lib/validators";
+import alphaVantageApi from "./AlphaVantageApi.js";
+
+const symbol = symbol => /^[a-zA-Z]+(.[a-zA-Z]+)?$/.test(symbol);
 
 function initialAssetData() {
   return {
@@ -72,7 +76,7 @@ export default {
     asset: {
       symbol: {
         required,
-        alpha
+        symbol
       },
       allocation: {
         required,
@@ -101,6 +105,14 @@ export default {
     }
   },
   methods: {
+    async blurSymbol() {
+      if (this.$v.asset.symbol.$error) return;
+
+      const price = await alphaVantageApi.getSymbolPrice(this.asset.symbol);
+
+      if (price < 0) return;
+      this.asset.sharePrice = price;
+    },
     handleSubmit() {
       if (this.$v.$invalid) {
         this.submitStatus = "ERROR";
@@ -116,10 +128,6 @@ export default {
 
 
 <style lang="scss" scoped>
-.field--error {
-  border: 1px #f79483 solid !important;
-}
-
 .column--submit {
   margin-top: auto;
 }
